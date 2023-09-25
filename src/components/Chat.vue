@@ -30,7 +30,7 @@
 <script setup>
 import SendIcon from './SendIcon.vue'
 import Message from './Message.vue'
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 
 import { useAuthStore } from '../store/auth'
 
@@ -60,15 +60,9 @@ const user = reactive({
 })
 const message = ref('')
 
+onMounted(() => {})
+
 function send() {
-  window.ax
-    .post('register', { tes: 'ok' })
-    .then(res => {
-      console.log(res)
-    })
-    .catch(e => {
-      console.log(e)
-    })
   // messages.value.push({
   //   id: 3,
   //   userName: 'fariqM',

@@ -30,21 +30,32 @@ export const useAuthStore = defineStore('authStore', {
     },
     registerToken(payload, photoUrl) {
       // payload{token, email}
-      console.log('photo', photoUrl)
       return new Promise((resolve, reject) => {
         window.ax
           .post('register-token', payload)
           .then(res => {
             this.token = payload.token
-            this.photo = photoUrl
             this.email = res.data.email
             this.username = res.data.username
             this.is_login = true
+            setTimeout(() => {
+              this.photo = photoUrl
+            }, 500)
             resolve(res)
           })
           .catch(e => {
             reject(e)
           })
+      })
+    },
+    logout() {
+      return new Promise(resolve => {
+        this.token = null
+        this.photo = null
+        this.email = null
+        this.username = null
+        this.is_login = false
+        resolve()
       })
     }
   }

@@ -2,16 +2,11 @@
   <nav>
     <div>
       <h1><strong>Vue</strong> Chat App</h1>
-
-      <!-- <div v-if="isLogin" class="login">
-        <Avatar :src="user.photoURL" />
-        <button class="text-gray-400 hover:text-white" @click="signOut">
-          Sign OutisLogin
-        </button>
-      </div> -->
-
+      <div class="login" v-if="authStore.photo">
+        <Avatar :src="authStore.photo" />
+      </div>
       <button
-        class="bg-green-500 hover:bg-green-600"
+        class="bg-green-500 hover:bg-green-600 ml-3"
         v-if="authStore.is_login"
         @click="logout"
       >
@@ -20,18 +15,14 @@
       <GoogleLogin v-else :callback="callback" prompt auto-login />
     </div>
   </nav>
-  <ModalsContainer />
 </template>
 
 <script setup>
+import Avatar from './Avatar.vue'
 import { onMounted } from 'vue'
-// eslint-disable-next-line no-unused-vars
 import { googleOneTap, decodeCredential, googleLogout } from 'vue3-google-login'
 import { useAuthStore } from '../store/auth'
 import { useNotification } from '@kyvg/vue3-notification'
-// import Avatar from './Avatar.vue'
-// import { ModalsContainer, useModal } from 'vue-final-modal'
-// import ModalConfirm from './ModalConfirm.vue'
 
 const authStore = useAuthStore()
 const { notify } = useNotification()
@@ -52,6 +43,12 @@ onMounted(() => {
 
 function logout() {
   googleLogout()
+  authStore.logout().then(() => {
+    notify({
+      title: 'Logout Success',
+      text: 'Thanks for coming!'
+    })
+  })
 }
 
 function handleGoogleResponse(response) {
@@ -88,14 +85,4 @@ function handleGoogleResponse(response) {
       alert('Oops something went wrong!')
     })
 }
-
-// const { open, close } = useModal({
-//   component: ModalConfirm,
-//   attrs: {
-//     title: 'Hello World!',
-//     onConfirm() {
-//       close()
-//     }
-//   }
-// })
 </script>
