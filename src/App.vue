@@ -1,6 +1,7 @@
 <template>
   <Nav />
   <Chat />
+  <notifications position="top center" />
 </template>
 
 <script setup>

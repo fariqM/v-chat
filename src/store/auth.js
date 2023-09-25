@@ -15,23 +15,34 @@ export const useAuthStore = defineStore('authStore', {
   },
   actions: {
     register(payload) {
-      // console.log(payload)
-      // return
+      // payload{username, email, token}
       return new Promise((resolve, reject) => {
         window.ax
           .post('register', payload)
           .then(res => {
-            console.log(res);
-            if (res.status == 201) {
-              this.token = payload.token
-              this.email = payload.email
-              this.username = payload.username
-              this.is_login = true
-              resolve()
-            }
+            resolve(res)
           })
           .catch(e => {
             console.log(e)
+            reject(e)
+          })
+      })
+    },
+    registerToken(payload, photoUrl) {
+      // payload{token, email}
+      console.log('photo', photoUrl)
+      return new Promise((resolve, reject) => {
+        window.ax
+          .post('register-token', payload)
+          .then(res => {
+            this.token = payload.token
+            this.photo = photoUrl
+            this.email = res.data.email
+            this.username = res.data.username
+            this.is_login = true
+            resolve(res)
+          })
+          .catch(e => {
             reject(e)
           })
       })

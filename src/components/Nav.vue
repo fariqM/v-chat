@@ -25,14 +25,16 @@
 
 <script setup>
 import { onMounted } from 'vue'
+// eslint-disable-next-line no-unused-vars
 import { googleOneTap, decodeCredential, googleLogout } from 'vue3-google-login'
 import { useAuthStore } from '../store/auth'
+import { useNotification } from '@kyvg/vue3-notification'
 // import Avatar from './Avatar.vue'
 // import { ModalsContainer, useModal } from 'vue-final-modal'
 // import ModalConfirm from './ModalConfirm.vue'
 
 const authStore = useAuthStore()
-
+const { notify } = useNotification()
 const callback = response => {
   handleGoogleResponse(response)
 }
@@ -50,24 +52,41 @@ onMounted(() => {
 
 function logout() {
   googleLogout()
-    .then(res => {
-      console.log(res)
-    })
-    .catch(e => {
-      console.log(e)
-    })
 }
 
 function handleGoogleResponse(response) {
   const userCred = decodeCredential(response.credential)
-  const payload = {
+  const reigsterPayload = {
     token: response.credential,
     email: userCred.email,
     username: userCred.name,
     photo: userCred.picture
   }
-  // const
-  authStore.register(payload)
+
+  authStore
+    .register(reigsterPayload)
+    .then(registerResponse => {
+      const registerTokenPayload = {
+        token: response.credential,
+        email: registerResponse.data.email
+      }
+      authStore
+        .registerToken(registerTokenPayload, userCred.picture)
+        .then(() => {
+          notify({
+            title: 'Login Success',
+            text: 'Welcome to V-Chat!'
+          })
+        })
+        .catch(e => {
+          console.log(e)
+          alert('Oops something went wrong!')
+        })
+    })
+    .catch(err => {
+      console.log(err)
+      alert('Oops something went wrong!')
+    })
 }
 
 // const { open, close } = useModal({
