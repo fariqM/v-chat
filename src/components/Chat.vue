@@ -44,6 +44,7 @@ import { ref, onMounted } from 'vue'
 
 import { useAuthStore } from '../store/auth'
 import { useMessageStore } from '../store/message'
+import Pusher from 'pusher-js'
 
 const authStore = useAuthStore()
 const messageStore = useMessageStore()
@@ -52,9 +53,29 @@ const message = ref('')
 
 onMounted(() => {
   messageStore.getAllMessage().then(() => {
-    // console.log(res.data)
+    setChannelPusher()
   })
 })
+
+function setChannelPusher() {
+  var pusher = new Pusher('30108b7620bbf32d2852', {
+    cluster: 'ap1'
+  })
+  var channel = pusher.subscribe('v-chat')
+  channel.bind('chat-message', function(data) {
+    if (data.message.user_id != authStore.current_user_id) {
+      const newMessage = {
+        id: data.message.id,
+        username: data.username,
+        user_id: data.message.user_id,
+        photo: data.message.photo,
+        text: data.message.text,
+        time: formateDate(data.message.created_at)
+      }
+      messageStore.addNewMessage(newMessage)
+    }
+  })
+}
 
 function send() {
   const payload = {
@@ -68,6 +89,7 @@ function send() {
     .sendMessage(payload)
     .then(res => {
       setNewMessage(res.data.callback)
+      message.value = ''
     })
     .catch(e => {
       console.log(e)

@@ -7,6 +7,7 @@ import vue3GoogleLogin from 'vue3-google-login'
 import googleToken from './store/token'
 import Notifications from '@kyvg/vue3-notification'
 
+
 import './main.css'
 
 window.__BASE_URL = 'http://localhost:3000'
@@ -18,7 +19,6 @@ window.ax = axios.create({
 
 const app = createApp(App)
 // const vfm = createVfm()
-
 // app.use(vfm)
 app.use(Notifications)
 app.use(createPinia())

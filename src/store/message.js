@@ -10,6 +10,9 @@ export const useMessageStore = defineStore('messageStore', {
     addNewMessage(payload) {
       // payload{id,username,user_id,photo,text,time}
       this.messages.push(payload)
+      setTimeout(() => {
+        window.scrollTo(0, document.body.scrollHeight)
+      }, 1)
     },
     sendMessage(payload) {
       // payload{text, email, photo, token}
