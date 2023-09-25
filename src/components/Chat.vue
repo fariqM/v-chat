@@ -2,13 +2,23 @@
   <div class="container-sm mt-20">
     <div class="mx-5">
       <Message
-        v-for="{ id, text, userPhotoURL, userName, userId } in messages"
+        v-for="{
+          id,
+          text,
+          photo,
+          username,
+          user_id,
+          time
+        } in messageStore.messages"
         :key="id"
-        :name="userName"
-        :photo-url="userPhotoURL"
-        :sender="userId === user?.uid"
+        :name="username"
+        :photo-url="photo"
+        :sender="user_id === authStore.current_user_id"
       >
-        {{ text }}
+        <p style="font-size: 0.8rem; margin-bottom: 4px">
+          {{ time }}
+        </p>
+        <p>{{ text }}</p>
       </Message>
     </div>
   </div>
@@ -30,37 +40,40 @@
 <script setup>
 import SendIcon from './SendIcon.vue'
 import Message from './Message.vue'
-import { reactive, ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 import { useAuthStore } from '../store/auth'
+import { useMessageStore } from '../store/message'
 
 const authStore = useAuthStore()
+const messageStore = useMessageStore()
 
-const messages = ref([
-  {
-    id: 1,
-    userName: 'fariqM',
-    userPhotoURL:
-      'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg',
-    userId: 21,
-    text: 'this is message'
-  },
-  {
-    id: 2,
-    userName: 'irma',
-    userPhotoURL:
-      'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg',
-    userId: 1,
-    text: 'this is message 2'
-  }
-])
+// const messages = ref([
+//   {
+//     id: 1,
+//     userName: 'fariqM',
+//     userPhotoURL:
+//       'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg',
+//     userId: 21,
+//     text: 'this is message'
+//   },
+//   {
+//     id: 2,
+//     userName: 'irma',
+//     userPhotoURL:
+//       'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg',
+//     userId: 1,
+//     text: 'this is message 2'
+//   }
+// ])
 
-const user = reactive({
-  uid: 21
-})
 const message = ref('')
 
-onMounted(() => {})
+onMounted(() => {
+  messageStore.getAllMessage().then(() => {
+    // console.log(res.data)
+  })
+})
 
 function send() {
   // messages.value.push({

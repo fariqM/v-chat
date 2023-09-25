@@ -7,6 +7,7 @@ export const useAuthStore = defineStore('authStore', {
     email: null,
     username: null,
     photo: null,
+    current_user_id: null,
     is_login: false
   }),
   getters: {
@@ -34,6 +35,7 @@ export const useAuthStore = defineStore('authStore', {
         window.ax
           .post('register-token', payload)
           .then(res => {
+            this.current_user_id = res.data.user_id
             this.token = payload.token
             this.email = res.data.email
             this.username = res.data.username
@@ -50,6 +52,7 @@ export const useAuthStore = defineStore('authStore', {
     },
     logout() {
       return new Promise(resolve => {
+        this.current_user_id = null
         this.token = null
         this.photo = null
         this.email = null

@@ -1,6 +1,7 @@
 <template>
   <div class="message">
     <span v-if="!sender">{{ name }}</span>
+    <!-- <span v-else>25-9-2023 8:4:54</span> -->
     <div class="flex" :class="sender ? 'flex-row-reverse' : ''">
       <Avatar class="mt-1" :src="photoUrl" />
       <div class="text w-3/4" :class="sender ? 'bg-green-800' : 'bg-gray-700'">
