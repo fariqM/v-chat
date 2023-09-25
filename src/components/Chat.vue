@@ -28,9 +28,6 @@
 </template>
 
 <script setup>
-// import ref
-// import { useAuth, useChat } from '@/firebase'
-
 import SendIcon from './SendIcon.vue'
 import Message from './Message.vue'
 import { reactive, ref } from 'vue'
@@ -64,15 +61,23 @@ const user = reactive({
 const message = ref('')
 
 function send() {
-  messages.value.push({
-    id: 3,
-    userName: 'fariqM',
-    userPhotoURL:
-      'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg',
-    userId: 21,
-    text: message.value
-  })
-  message.value = ''
+  window.ax
+    .post('register', { tes: 'ok' })
+    .then(res => {
+      console.log(res)
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  // messages.value.push({
+  //   id: 3,
+  //   userName: 'fariqM',
+  //   userPhotoURL:
+  //     'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg',
+  //   userId: 21,
+  //   text: message.value
+  // })
+  // message.value = ''
 }
 
 // export default {
