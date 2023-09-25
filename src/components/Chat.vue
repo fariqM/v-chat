@@ -48,25 +48,6 @@ import { useMessageStore } from '../store/message'
 const authStore = useAuthStore()
 const messageStore = useMessageStore()
 
-// const messages = ref([
-//   {
-//     id: 1,
-//     userName: 'fariqM',
-//     userPhotoURL:
-//       'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg',
-//     userId: 21,
-//     text: 'this is message'
-//   },
-//   {
-//     id: 2,
-//     userName: 'irma',
-//     userPhotoURL:
-//       'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg',
-//     userId: 1,
-//     text: 'this is message 2'
-//   }
-// ])
-
 const message = ref('')
 
 onMounted(() => {
@@ -76,41 +57,49 @@ onMounted(() => {
 })
 
 function send() {
-  // messages.value.push({
-  //   id: 3,
-  //   userName: 'fariqM',
-  //   userPhotoURL:
-  //     'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg',
-  //   userId: 21,
-  //   text: message.value
-  // })
-  // message.value = ''
+  const payload = {
+    text: message.value,
+    token: authStore.token,
+    email: authStore.email,
+    photo: authStore.photo
+  }
+
+  messageStore
+    .sendMessage(payload)
+    .then(res => {
+      setNewMessage(res.data.callback)
+    })
+    .catch(e => {
+      console.log(e)
+    })
 }
 
-// export default {
-//   components: { Message, SendIcon },
-//   setup() {
-//     const { user, isLogin } = useAuth()
-//     const { messages, sendMessage } = useChat()
+function setNewMessage(data) {
+  const payload = {
+    id: data.id,
+    username: authStore.username,
+    user_id: authStore.current_user_id,
+    photo: data.photo,
+    text: data.text,
+    time: formateDate(data.created_at)
+  }
+  messageStore.addNewMessage(payload)
+}
 
-//     const bottom = ref(null)
-//     watch(
-//       messages,
-//       () => {
-//         nextTick(() => {
-//           bottom.value?.scrollIntoView({ behavior: 'smooth' })
-//         })
-//       },
-//       { deep: true }
-//     )
+function formateDate(timestamp) {
+  // Create a Date object from the timestamp
+  const date = new Date(timestamp)
 
-//     const message = ref('')
-//     const send = () => {
-//       sendMessage(message.value)
-//       message.value = ''
-//     }
+  // Get the day, month, year, hour, minute, and second components
+  const day = date.getUTCDate()
+  const month = date.getUTCMonth() + 1 // Month is zero-based, so add 1
+  const year = date.getUTCFullYear()
+  const hour = date.getUTCHours()
+  const minute = date.getUTCMinutes()
+  const second = date.getUTCSeconds()
 
-//     return { user, isLogin, messages, bottom, message, send }
-//   }
-// }
+  // Create a formatted date string
+  const formattedDate = `${day}-${month}-${year} ${hour}:${minute}:${second}`
+  return formattedDate
+}
 </script>

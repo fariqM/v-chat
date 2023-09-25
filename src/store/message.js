@@ -7,8 +7,12 @@ export const useMessageStore = defineStore('messageStore', {
   }),
   getters: {},
   actions: {
+    addNewMessage(payload) {
+      // payload{id,username,user_id,photo,text,time}
+      this.messages.push(payload)
+    },
     sendMessage(payload) {
-      // payload{text, email, token}
+      // payload{text, email, photo, token}
       return new Promise((resolve, reject) => {
         window.ax
           .post('messages', payload)

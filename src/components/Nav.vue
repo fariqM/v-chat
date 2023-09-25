@@ -37,7 +37,6 @@ onMounted(() => {
     })
     .catch(error => {
       console.log(error)
-      // alert('Oops something went wrong!')
     })
 })
 
