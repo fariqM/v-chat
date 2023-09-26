@@ -1,7 +1,7 @@
 <template>
   <nav>
     <div>
-      <h1><strong>Vue</strong> Chat App</h1>
+      <h1><strong>V</strong>Chat</h1>
       <div class="login" v-if="authStore.photo">
         <Avatar :src="authStore.photo" />
       </div>

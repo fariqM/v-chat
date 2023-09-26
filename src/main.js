@@ -7,10 +7,11 @@ import vue3GoogleLogin from 'vue3-google-login'
 import googleToken from './store/token'
 import Notifications from '@kyvg/vue3-notification'
 
-
 import './main.css'
 
-window.__BASE_URL = 'http://localhost:3000'
+// window.__BASE_URL = 'http://localhost:3000'
+window.__BASE_URL = 'https://v-chat-x6lp.onrender.com'
+
 window.ax = axios.create({
   baseURL: `${window.__BASE_URL}/api/v1`,
   timeout: 10000,

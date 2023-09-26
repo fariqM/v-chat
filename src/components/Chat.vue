@@ -45,6 +45,7 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../store/auth'
 import { useMessageStore } from '../store/message'
 import Pusher from 'pusher-js'
+import moment from 'moment'
 
 const authStore = useAuthStore()
 const messageStore = useMessageStore()
@@ -109,19 +110,8 @@ function setNewMessage(data) {
 }
 
 function formateDate(timestamp) {
-  // Create a Date object from the timestamp
-  const date = new Date(timestamp)
-
-  // Get the day, month, year, hour, minute, and second components
-  const day = date.getUTCDate()
-  const month = date.getUTCMonth() + 1 // Month is zero-based, so add 1
-  const year = date.getUTCFullYear()
-  const hour = date.getUTCHours()
-  const minute = date.getUTCMinutes()
-  const second = date.getUTCSeconds()
-
-  // Create a formatted date string
-  const formattedDate = `${day}-${month}-${year} ${hour}:${minute}:${second}`
-  return formattedDate
+  // Parse the SQLite timestamp into a JavaScript Date object
+  let dateFormat = moment(timestamp).format('Y-MM-D HH:mm:ss')
+  return dateFormat
 }
 </script>

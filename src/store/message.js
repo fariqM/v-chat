@@ -1,5 +1,6 @@
 // import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import moment from 'moment'
 
 export const useMessageStore = defineStore('messageStore', {
   state: () => ({
@@ -35,26 +36,14 @@ export const useMessageStore = defineStore('messageStore', {
           .then(res => {
             this.messages = []
             res.data.messages.forEach(msg => {
-              // Create a Date object from the timestamp
-              const date = new Date(msg.created_at)
-
-              // Get the day, month, year, hour, minute, and second components
-              const day = date.getUTCDate()
-              const month = date.getUTCMonth() + 1 // Month is zero-based, so add 1
-              const year = date.getUTCFullYear()
-              const hour = date.getUTCHours()
-              const minute = date.getUTCMinutes()
-              const second = date.getUTCSeconds()
-
-              // Create a formatted date string
-              const formattedDate = `${day}-${month}-${year} ${hour}:${minute}:${second}`
+              let dateFormat = moment(msg.created_at).format('Y-MM-D HH:mm:ss')
               this.messages.push({
                 id: msg.id,
                 username: msg.username,
                 user_id: msg.user_id,
                 photo: msg.photo,
                 text: msg.text,
-                time: formattedDate
+                time: dateFormat
               })
             })
             resolve(res)
