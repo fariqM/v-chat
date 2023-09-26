@@ -73,6 +73,9 @@ function handleGoogleResponse(response) {
             title: 'Login Success',
             text: 'Welcome to V-Chat!'
           })
+          setTimeout(() => {
+            window.scrollTo(0, document.body.scrollHeight)
+          }, 300)
         })
         .catch(e => {
           console.log(e)

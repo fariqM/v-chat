@@ -46,6 +46,9 @@ export const useMessageStore = defineStore('messageStore', {
                 time: dateFormat
               })
             })
+            setTimeout(() => {
+              window.scrollTo(0, document.body.scrollHeight)
+            }, 300)
             resolve(res)
           })
           .catch(e => {
